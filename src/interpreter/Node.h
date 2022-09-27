@@ -62,6 +62,7 @@ struct RelationWrapper;
     Forward(StringConstant)\
     Forward(TupleElement)\
     Forward(AutoIncrement)\
+    Forward(CanonicalOperator)\
     Forward(IntrinsicOperator)\
     Forward(UserDefinedOperator)\
     Forward(NestedIntrinsicOperator)\
@@ -148,6 +149,8 @@ inline NodeType constructNodeType(std::string tokBase, const ram::Relation& rel)
 
     std::string arity = std::to_string(rel.getArity());
     if (rel.getRepresentation() == RelationRepresentation::EQREL) {
+        return map.at("I_" + tokBase + "_Eqrel_" + arity);
+    } else if (rel.getRepresentation() == RelationRepresentation::EQREL_TYPE) {
         return map.at("I_" + tokBase + "_Eqrel_" + arity);
     } else if(rel.getRepresentation() == RelationRepresentation::BTREE_DELETE) {
         return map.at("I_" + tokBase + "_BtreeDelete_" + arity);
@@ -472,6 +475,15 @@ class AutoIncrement : public Node {
  */
 class IntrinsicOperator : public CompoundNode {
     using CompoundNode::CompoundNode;
+};
+
+class CanonicalOperator : public IntrinsicOperator, public RelationalOperation {
+public:
+    using RelationHandle = Own<RelationWrapper>;
+
+    CanonicalOperator(
+            RelationHandle* relHandle, enum NodeType ty, const ram::Node* sdw, VecOwn<Node> children)
+            : IntrinsicOperator(ty, sdw, std::move(children)), RelationalOperation(relHandle) {}
 };
 
 /**

@@ -108,6 +108,9 @@ public:
     /** Return types */
     std::vector<Type*> getTypes() const;
 
+    /** Returns the first `Type` declaration for a given name, if any */
+    Type* getType(QualifiedName const&) const;
+
     /** Return relations */
     std::vector<Relation*> getRelations() const;
 

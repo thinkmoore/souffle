@@ -57,6 +57,8 @@ enum class FunctorOp {
     U2I,  // unsigned  to signed
     U2S,  // unsigned  to symbol
 
+    CANONICALIZE,  // canonicalize a relation element
+
     /** Binary Functor Operators */
     ADD,                 // addition
     SUB,                 // subtraction

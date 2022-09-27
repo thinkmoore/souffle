@@ -1053,6 +1053,10 @@ void SemanticCheckerImpl::checkNamespaces() {
     for (const auto& rel : program.getRelations()) {
         const std::string name = toString(rel->getQualifiedName());
         if (names.count(name) != 0u) {
+            // Allow type and relation with same name if produced by the same source location
+            if (!((rel->getSrcLoc() < names[name]) || (names[name] < rel->getSrcLoc()))) {
+                continue;
+            }
             report.addError("Name clash on relation " + name, rel->getSrcLoc());
         } else {
             names[name] = rel->getSrcLoc();

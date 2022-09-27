@@ -213,6 +213,10 @@ FunctorOp TranslatorContext::getOverloadedFunctorOp(const ast::IntrinsicFunctor&
     return polyAnalysis->getOverloadedFunctionOp(inf);
 }
 
+std::string TranslatorContext::getCanonicalRelation(const ast::IntrinsicFunctor& inf) const {
+    return polyAnalysis->getCanonicalRelation(inf);
+}
+
 bool TranslatorContext::isADTEnum(const ast::BranchInit* adt) const {
     return ast::analysis::isADTEnum(sumTypeBranches->unsafeGetType(adt->getBranchName()));
 }

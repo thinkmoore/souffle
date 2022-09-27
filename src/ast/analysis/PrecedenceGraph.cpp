@@ -40,6 +40,14 @@ void PrecedenceGraphAnalysis::run(const TranslationUnit& translationUnit) {
     for (const auto* r : program.getRelations()) {
         backingGraph.insert(r);
 
+        for (const auto* a : r->getAttributes()) {
+            if (const auto* t = program.getType(a->getTypeName())) {
+                if (isA<ast::EqrelType>(t)) {
+                    backingGraph.insert(program.getRelation(a->getTypeName()), r);
+                }
+            }
+        }
+
         auto addEdgeToR = [&](const Atom& atom) { backingGraph.insert(program.getRelation(atom), r); };
         for (auto&& c : program.getClauses(*r)) {
             souffle::visit(c->getHead()->getArguments(), addEdgeToR);

@@ -310,6 +310,14 @@ FunctorOp TypeAnalysis::getPolymorphicOperator(const IntrinsicFunctor& inf) cons
     return functorInfo.at(&inf)->op;
 }
 
+std::string TypeAnalysis::getCanonicalRelation(const IntrinsicFunctor& functor) const {
+    auto argExpr = functor.getArguments()[0];
+    auto tySet = argumentTypes.find(argExpr)->second;
+    assert(tySet.size() == 1);
+    auto ty = tySet.begin();
+    return ty->getName().toString();
+}
+
 bool TypeAnalysis::analyseIntrinsicFunctors(const TranslationUnit& translationUnit) {
     bool changed = false;
     const auto& program = translationUnit.getProgram();

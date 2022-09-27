@@ -33,6 +33,7 @@
 #include "ast/Constant.h"
 #include "ast/Constraint.h"
 #include "ast/Counter.h"
+#include "ast/EqrelType.h"
 #include "ast/FunctionalConstraint.h"
 #include "ast/Functor.h"
 #include "ast/FunctorDeclaration.h"
@@ -76,6 +77,7 @@ struct Visitor : souffle::detail::VisitorBase<R, NodeType, Params...> {
 
         // types
         SOUFFLE_VISITOR_FORWARD(AliasType);
+        SOUFFLE_VISITOR_FORWARD(EqrelType);
         SOUFFLE_VISITOR_FORWARD(SubsetType);
         SOUFFLE_VISITOR_FORWARD(UnionType);
         SOUFFLE_VISITOR_FORWARD(RecordType);
@@ -125,6 +127,7 @@ struct Visitor : souffle::detail::VisitorBase<R, NodeType, Params...> {
     SOUFFLE_VISITOR_LINK(ast::SubsetType, Type);
     SOUFFLE_VISITOR_LINK(ast::RecordType, Type);
     SOUFFLE_VISITOR_LINK(ast::AliasType, Type);
+    SOUFFLE_VISITOR_LINK(ast::EqrelType, Type);
     SOUFFLE_VISITOR_LINK(ast::AlgebraicDataType, Type);
     SOUFFLE_VISITOR_LINK(ast::UnionType, Type);
     SOUFFLE_VISITOR_LINK(ast::Type, Node);

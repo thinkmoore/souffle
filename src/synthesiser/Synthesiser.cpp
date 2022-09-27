@@ -2151,6 +2151,16 @@ void Synthesiser::emitCode(std::ostream& out, const Statement& stmt) {
         }
 
         void visit_(
+                type_identity<CanonicalOperator>, const CanonicalOperator& op, std::ostream& out) override {
+            PRINT_BEGIN_COMMENT(out);
+            const std::string& cppName = synthesiser.getRelationName(synthesiser.lookup(op.getRelation()));
+            out << "(" << cppName << "->canonicalize(";
+            dispatch(*op.getArguments()[0], out);
+            out << "))";
+            PRINT_END_COMMENT(out);
+        }
+
+        void visit_(
                 type_identity<IntrinsicOperator>, const IntrinsicOperator& op, std::ostream& out) override {
 #define MINMAX_SYMBOL(op)                   \
     {                                       \
@@ -2381,6 +2391,8 @@ void Synthesiser::emitCode(std::ostream& out, const Statement& stmt) {
                 case FunctorOp::URANGE:
                 case FunctorOp::FRANGE:
                     fatal("ICE: functor `%s` must map onto `NestedIntrinsicOperator`", op.getOperator());
+                case FunctorOp::CANONICALIZE:
+                    fatal("ICE: functor `%s` must map onto `CanonicalOperator`", op.getOperator());
             }
             PRINT_END_COMMENT(out);
 

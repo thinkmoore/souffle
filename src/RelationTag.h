@@ -58,6 +58,7 @@ enum class RelationRepresentation {
     BTREE,         // use btree data-structure
     BTREE_DELETE,  // use btree_delete data-structure
     EQREL,         // use union data-structure
+    EQREL_TYPE,    // use union data-structure with access mediated by types
     PROVENANCE,    // use custom btree data-structure with provenance extras
     INFO,          // info relation for provenance
 };
@@ -168,6 +169,7 @@ inline std::ostream& operator<<(std::ostream& os, RelationRepresentation represe
         case RelationRepresentation::BTREE_DELETE: return os << "btree_delete";
         case RelationRepresentation::BRIE: return os << "brie";
         case RelationRepresentation::EQREL: return os << "eqrel";
+        case RelationRepresentation::EQREL_TYPE: return os << "eqrel_type";
         case RelationRepresentation::PROVENANCE: return os << "provenance";
         case RelationRepresentation::INFO: return os << "info";
         case RelationRepresentation::DEFAULT: return os;

@@ -118,6 +118,18 @@ std::vector<Type*> Program::getTypes() const {
     return toPtrVector(types);
 }
 
+Type* Program::getType(QualifiedName const& name) const {
+    auto has_name = [name](const Own<Type>& t) {
+        return !(name < t->getQualifiedName() || t->getQualifiedName() < name);
+    };
+    auto it = std::find_if(types.begin(), types.end(), has_name);
+    if (it != types.end()) {
+        return it->get();
+    } else {
+        return nullptr;
+    }
+}
+
 std::vector<Relation*> Program::getRelations() const {
     return toPtrVector(relations, &RelationInfo::decls);
 }

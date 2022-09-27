@@ -66,6 +66,7 @@ private:
     void checkRecordType(const ast::RecordType& type);
     void checkSubsetType(const ast::SubsetType& type);
     void checkAliasType(const ast::AliasType& type);
+    void checkEqrelType(const ast::EqrelType& type);
     void checkUnionType(const ast::UnionType& type);
     void checkADT(const ast::AlgebraicDataType& type);
 };
@@ -248,6 +249,21 @@ void TypeDeclarationChecker::checkAliasType(const ast::AliasType& astType) {
     }
 }
 
+void TypeDeclarationChecker::checkEqrelType(const ast::EqrelType& astType) {
+    if (typeEnvAnalysis.isCyclic(astType.getQualifiedName())) {
+        report.addError(
+                tfm::format("Infinite descent in the definition of type %s", astType.getQualifiedName()),
+                astType.getSrcLoc());
+        return;
+    }
+    if (!typeEnv.isType(astType.getEqrelType())) {
+        report.addError(tfm::format("Undefined eqrel type %s in definition of type %s",
+                                astType.getEqrelType(), astType.getQualifiedName()),
+                astType.getSrcLoc());
+        return;
+    }
+}
+
 void TypeDeclarationChecker::checkSubsetType(const ast::SubsetType& astType) {
     if (typeEnvAnalysis.isCyclic(astType.getQualifiedName())) {
         report.addError(
@@ -294,6 +310,8 @@ void TypeDeclarationChecker::run() {
             checkSubsetType(*as<ast::SubsetType>(type));
         } else if (isA<ast::AliasType>(type)) {
             checkAliasType(*as<ast::AliasType>(type));
+        } else if (isA<ast::EqrelType>(type)) {
+            checkEqrelType(*as<ast::EqrelType>(type));
         } else if (isA<ast::AlgebraicDataType>(type)) {
             checkADT(*as<ast::AlgebraicDataType>(type));
         } else {

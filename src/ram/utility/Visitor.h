@@ -122,6 +122,7 @@ struct Visitor : souffle::detail::VisitorBase<R, NodeType, Params...> {
         SOUFFLE_VISITOR_FORWARD(FloatConstant);
         SOUFFLE_VISITOR_FORWARD(NumericConstant);
         SOUFFLE_VISITOR_FORWARD(StringConstant);
+        SOUFFLE_VISITOR_FORWARD(CanonicalOperator);
         SOUFFLE_VISITOR_FORWARD(IntrinsicOperator);
         SOUFFLE_VISITOR_FORWARD(UserDefinedOperator);
         SOUFFLE_VISITOR_FORWARD(AutoIncrement);
@@ -263,6 +264,7 @@ protected:
     SOUFFLE_VISITOR_LINK(StringConstant, Expression);
     SOUFFLE_VISITOR_LINK(UndefValue, Expression);
     SOUFFLE_VISITOR_LINK(TupleElement, Expression);
+    SOUFFLE_VISITOR_LINK(CanonicalOperator, AbstractOperator);
     SOUFFLE_VISITOR_LINK(IntrinsicOperator, AbstractOperator);
     SOUFFLE_VISITOR_LINK(UserDefinedOperator, AbstractOperator);
     SOUFFLE_VISITOR_LINK(AbstractOperator, Expression);

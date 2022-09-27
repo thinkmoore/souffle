@@ -102,6 +102,7 @@ public:
     AggregateOp getPolymorphicOperator(const Aggregator& agg) const;
     BinaryConstraintOp getPolymorphicOperator(const BinaryConstraint& bc) const;
     FunctorOp getPolymorphicOperator(const IntrinsicFunctor& inf) const;
+    std::string getCanonicalRelation(const IntrinsicFunctor& functor) const;
 
 private:
     // General type analysis

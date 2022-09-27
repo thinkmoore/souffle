@@ -1,6 +1,6 @@
 /*
  * Souffle - A Datalog Compiler
- * Copyright (c) 2020 The Souffle Developers. All rights reserved
+ * Copyright (c) 2021, The Souffle Developers. All rights reserved
  * Licensed under the Universal Permissive License v 1.0 as shown at:
  * - https://opensource.org/licenses/UPL
  * - <souffle root>/licenses/SOUFFLE-UPL.txt
@@ -8,9 +8,9 @@
 
 /************************************************************************
  *
- * @file AliasType.h
+ * @file EqrelType.h
  *
- * Defines the subset type class
+ * Defines the eqrel type class
  *
  ***********************************************************************/
 
@@ -25,23 +25,26 @@
 namespace souffle::ast {
 
 /**
- * @class AliasType
- * @brief Defines alias type class
+ * @class EqrelType
+ * @brief The eqrel type class
  *
  * Example:
- *    .type A = B
+ *  .type A = eqrel B
+ *
+ * An eqrel type associates a given type with an equivalence
+ * relation over that type.
  */
-class AliasType : public Type {
+class EqrelType : public Type {
 public:
-    AliasType(QualifiedName name, QualifiedName aliasTypeName, SrcLocation loc = {});
+    EqrelType(QualifiedName name, QualifiedName aliasTypeName, SrcLocation loc = {});
 
     /** Return alias type */
-    const QualifiedName& getAliasType() const {
+    const QualifiedName& getEqrelType() const {
         return aliasType;
     }
 
     /** Set alias type */
-    void setAliasType(const QualifiedName& type) {
+    void setEqrelType(const QualifiedName& type) {
         aliasType = type;
     }
 
@@ -51,7 +54,7 @@ protected:
 private:
     bool equal(const Node& node) const override;
 
-    AliasType* cloning() const override;
+    EqrelType* cloning() const override;
 
 private:
     /** Base type */

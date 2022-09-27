@@ -106,6 +106,9 @@ struct t_eqrel {
         RamDomain data[2] = {a1, a2};
         return insert(data);
     }
+    RamDomain canonicalize(RamDomain e) {
+        return ind.canonicalize(e);
+    }
     void extendAndInsert(t_eqrel& other) {
         ind.extendAndInsert(other.ind);
     }

@@ -73,6 +73,16 @@ NodePtr NodeGenerator::visit_(type_identity<ram::AutoIncrement>, const ram::Auto
     return mk<AutoIncrement>(I_AutoIncrement, &inc);
 }
 
+NodePtr NodeGenerator::visit_(type_identity<ram::CanonicalOperator>, const ram::CanonicalOperator& op) {
+    std::size_t relId = encodeRelation(op.getRelation());
+    auto rel = getRelationHandle(relId);
+    NodePtrVec children;
+    for (const auto& arg : op.getArguments()) {
+        children.push_back(dispatch(*arg));
+    }
+    return mk<CanonicalOperator>(rel, I_CanonicalOperator, &op, std::move(children));
+}
+
 NodePtr NodeGenerator::visit_(type_identity<ram::IntrinsicOperator>, const ram::IntrinsicOperator& op) {
     NodePtrVec children;
     for (const auto& arg : op.getArguments()) {

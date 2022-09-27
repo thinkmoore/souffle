@@ -134,6 +134,8 @@ public:
 
     NodePtr visit_(type_identity<ram::AutoIncrement>, const ram::AutoIncrement& inc) override;
 
+    NodePtr visit_(type_identity<ram::CanonicalOperator>, const ram::CanonicalOperator& op) override;
+
     NodePtr visit_(type_identity<ram::IntrinsicOperator>, const ram::IntrinsicOperator& op) override;
 
     NodePtr visit_(type_identity<ram::UserDefinedOperator>, const ram::UserDefinedOperator& op) override;

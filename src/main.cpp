@@ -45,6 +45,7 @@
 #include "ast/transform/Pipeline.h"
 #include "ast/transform/PragmaChecker.h"
 #include "ast/transform/ReduceExistentials.h"
+#include "ast/transform/ReifyEquivalences.h"
 #include "ast/transform/RemoveBooleanConstraints.h"
 #include "ast/transform/RemoveEmptyRelations.h"
 #include "ast/transform/RemoveRedundantRelations.h"
@@ -699,6 +700,7 @@ int main(int argc, char** argv) {
             mk<ast::transform::FixpointTransformer>(mk<ast::transform::PipelineTransformer>(
                     mk<ast::transform::ResolveAnonymousRecordAliasesTransformer>(),
                     mk<ast::transform::FoldAnonymousRecords>())),
+            mk<ast::transform::ReifyEquivalencesTransformer>(),
             mk<ast::transform::SubsumptionQualifierTransformer>(), mk<ast::transform::SemanticChecker>(),
             mk<ast::transform::GroundWitnessesTransformer>(),
             mk<ast::transform::UniqueAggregationVariablesTransformer>(),

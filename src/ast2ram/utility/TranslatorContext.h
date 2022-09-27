@@ -120,6 +120,7 @@ public:
     AggregateOp getOverloadedAggregatorOperator(const ast::Aggregator& aggr) const;
     BinaryConstraintOp getOverloadedBinaryConstraintOperator(const ast::BinaryConstraint& bc) const;
     FunctorOp getOverloadedFunctorOp(const ast::IntrinsicFunctor& inf) const;
+    std::string getCanonicalRelation(const ast::IntrinsicFunctor& inf) const;
 
     /** Analyses */
     const ast::SipsMetric* getSipsMetric() const {

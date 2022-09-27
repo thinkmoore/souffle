@@ -47,7 +47,7 @@ class TypeEnvironment;
  * record type, an algebraic data-type.
  *
  * Type = PrimitiveType | ConstantType | SubsetType | AliasType |
- *        UnionType | RecordType | AlgebraicDataType
+ *        EqrelType | UnionType | RecordType | AlgebraicDataType
  */
 class Type {
 public:
@@ -166,6 +166,28 @@ private:
 
     /** Base type */
     const Type& aliasType;
+};
+
+/*
+ * Eqrel Type Class
+ */
+class EqrelType : public Type {
+public:
+    void print(std::ostream& out) const override;
+
+    const Type& getEqrelType() const {
+        return eqrelType;
+    }
+
+protected:
+    EqrelType(const TypeEnvironment& environment, const QualifiedName& name, const Type& eqrel)
+            : Type(environment, name), eqrelType(eqrel){};
+
+private:
+    friend class TypeEnvironment;
+
+    /** Base type */
+    const Type& eqrelType;
 };
 
 /**

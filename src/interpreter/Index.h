@@ -450,6 +450,25 @@ public:
 };
 
 /**
+ * A BtreeDelete index
+ */
+template <std::size_t _Arity>
+class BtreeDeleteIndex : public interpreter::Index<_Arity, BtreeDelete> {
+public:
+    using Index<_Arity, BtreeDelete>::Index;
+    using Index<_Arity, BtreeDelete>::data;
+    using Index<_Arity, BtreeDelete>::order;
+    using Tuple = typename souffle::Tuple<RamDomain, _Arity>;
+
+    /**
+     * Erase a tuple from this index.
+     */
+    bool erase(const Tuple& tuple) {
+        return data.erase(order.encode(tuple)) > 0;
+    }
+};
+
+/**
  * For EqrelIndex we do inheritence since EqrelIndex only diff with one extra function.
  */
 class EqrelIndex : public interpreter::Index<2, Eqrel> {
@@ -470,24 +489,9 @@ public:
     void extendAndInsert(EqrelIndex* otherIndex) {
         this->data.extendAndInsert(otherIndex->data);
     }
-};
 
-/**
- * A BtreeDelete index
- */
-template <std::size_t _Arity>
-class BtreeDeleteIndex : public interpreter::Index<_Arity, BtreeDelete> {
-public:
-    using Index<_Arity, BtreeDelete>::Index;
-    using Index<_Arity, BtreeDelete>::data;
-    using Index<_Arity, BtreeDelete>::order;
-    using Tuple = typename souffle::Tuple<RamDomain, _Arity>;
-
-    /**
-     * Erase a tuple from this index.
-     */
-    bool erase(const Tuple& tuple) {
-        return data.erase(order.encode(tuple)) > 0;
+    RamDomain canonicalize(RamDomain& elem) {
+        return this->data.canonicalize(elem);
     }
 };
 

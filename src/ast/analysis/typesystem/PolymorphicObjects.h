@@ -53,6 +53,8 @@ public:
     // Functors
     FunctorOp getOverloadedFunctionOp(const IntrinsicFunctor& inf) const;
 
+    std::string getCanonicalRelation(const IntrinsicFunctor& cf) const;
+
     // Binary constraints
     BinaryConstraintOp getOverloadedOperator(const BinaryConstraint& bc) const;
 

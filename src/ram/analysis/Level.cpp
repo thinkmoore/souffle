@@ -214,6 +214,14 @@ std::optional<std::size_t> LevelAnalysis::getLevel(const Node* node) const {
             return level;
         }
 
+        maybe_level visit_(type_identity<CanonicalOperator>, const CanonicalOperator& op) override {
+            maybe_level level = std::nullopt;
+            for (const auto& arg : op.getArguments()) {
+                level = max(level, dispatch(*arg));
+            }
+            return level;
+        }
+
         // pack operator
         maybe_level visit_(type_identity<PackRecord>, const PackRecord& pack) override {
             maybe_level level = std::nullopt;

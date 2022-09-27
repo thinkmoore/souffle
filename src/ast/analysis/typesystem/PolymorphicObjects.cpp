@@ -34,6 +34,10 @@ FunctorOp PolymorphicObjectsAnalysis::getOverloadedFunctionOp(const IntrinsicFun
     return typeAnalysis->getPolymorphicOperator(inf);
 }
 
+std::string PolymorphicObjectsAnalysis::getCanonicalRelation(const IntrinsicFunctor& cf) const {
+    return typeAnalysis->getCanonicalRelation(cf);
+}
+
 NumericConstant::Type PolymorphicObjectsAnalysis::getInferredType(const NumericConstant& nc) const {
     return typeAnalysis->getPolymorphicNumericConstantType(nc);
 }

@@ -437,6 +437,11 @@ public:
             src->extendAndInsert(trg);
         }
     }
+
+    RamDomain canonicalize(RamDomain& elem) {
+        auto rel = static_cast<EqrelIndex*>(this->main);
+        return rel->canonicalize(elem);
+    }
 };
 
 // The type of relation factory functions.

@@ -45,6 +45,8 @@ char const* functorOpNameLegacy(FunctorOp op) {
         case FunctorOp::I2U:
         case FunctorOp::S2U: return "to_unsigned";
 
+        case FunctorOp::CANONICALIZE: return "canonicalize";
+
         /** Binary Functor Operators */
         case FunctorOp::ADD:
         case FunctorOp::FADD:
@@ -219,6 +221,13 @@ const std::vector<IntrinsicFunctorInfo> FUNCTOR_INTRINSICS = {
         OP_1(ORD, Symbol, Signed),
         OP_1(ORD, Record, Signed),
         OP_1(ORD, ADT, Signed),
+
+        OP_1(CANONICALIZE, Signed, Signed),
+        OP_1(CANONICALIZE, Unsigned, Unsigned),
+        OP_1(CANONICALIZE, Float, Float),
+        OP_1(CANONICALIZE, Symbol, Symbol),
+        OP_1(CANONICALIZE, Record, Record),
+        OP_1(CANONICALIZE, ADT, ADT),
 
         VARIADIC(CAT, Symbol),
         OP_1(STRLEN, Symbol, Signed),

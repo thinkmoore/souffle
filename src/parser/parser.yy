@@ -53,6 +53,7 @@
     #include "ast/Constraint.h"
     #include "ast/Counter.h"
     #include "ast/Directive.h"
+    #include "ast/EqrelType.h"
     #include "ast/ExecutionOrder.h"
     #include "ast/ExecutionPlan.h"
     #include "ast/FunctionalConstraint.h"
@@ -375,6 +376,11 @@ type_decl
   : TYPE IDENT SUBTYPE qualified_name
     {
       $$ = mk<ast::SubsetType>($IDENT, $qualified_name, @$);
+    }
+  | TYPE IDENT EQUALS EQREL_QUALIFIER union_type_list
+    {
+      assert($union_type_list.size() == 1 && "eqrel type must specify exactly one type");
+      $$ = mk<ast::EqrelType>($IDENT, $union_type_list[0], @$);
     }
   | TYPE IDENT EQUALS union_type_list
     {

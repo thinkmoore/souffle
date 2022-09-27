@@ -25,6 +25,7 @@ set(SOUFFLE_SOURCES
     ast/Constant.cpp
     ast/Counter.cpp
     ast/Directive.cpp
+    ast/EqrelType.cpp
     ast/ExecutionOrder.cpp
     ast/ExecutionPlan.cpp
     ast/FunctorDeclaration.cpp
@@ -92,6 +93,7 @@ set(SOUFFLE_SOURCES
     ast/transform/PartitionBodyLiterals.cpp
     ast/transform/PragmaChecker.cpp
     ast/transform/ReduceExistentials.cpp
+    ast/transform/ReifyEquivalences.cpp
     ast/transform/RemoveBooleanConstraints.cpp
     ast/transform/RemoveEmptyRelations.cpp
     ast/transform/RemoveRedundantRelations.cpp

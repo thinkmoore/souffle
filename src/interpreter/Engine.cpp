@@ -337,6 +337,8 @@ void Engine::createRelation(const ram::Relation& id, const std::size_t idx) {
 
     if (id.getRepresentation() == RelationRepresentation::EQREL) {
         res = createEqrelRelation(id, isa.getIndexSelection(id.getName()));
+    } else if (id.getRepresentation() == RelationRepresentation::EQREL_TYPE) {
+        res = createEqrelRelation(id, isa.getIndexSelection(id.getName()));
     } else if (id.getRepresentation() == RelationRepresentation::BTREE_DELETE) {
         res = createBTreeDeleteRelation(id, isa.getIndexSelection(id.getName()));
     } else if (id.getRepresentation() == RelationRepresentation::PROVENANCE) {
@@ -563,6 +565,12 @@ RamDomain Engine::execute(const Node* node, Context& ctxt) {
             return incCounter();
         ESAC(AutoIncrement)
 
+        CASE(CanonicalOperator)
+            auto arg = execute(shadow.getChild(0), ctxt);
+            auto& rel = *static_cast<EqrelRelation*>(shadow.getRelation());
+            return rel.canonicalize(arg);
+        ESAC(CanonicalOperator)
+
         CASE(IntrinsicOperator)
 // clang-format off
 #define BINARY_OP_TYPED(ty, op) return ramBitCast(static_cast<ty>(EVAL_CHILD(ty, 0) op EVAL_CHILD(ty, 1)))
@@ -755,6 +763,8 @@ RamDomain Engine::execute(const Node* node, Context& ctxt) {
                 case FunctorOp::URANGE:
                 case FunctorOp::FRANGE:
                     fatal("ICE: functor `%s` must map onto `NestedIntrinsicOperator`", cur.getOperator());
+                case FunctorOp::CANONICALIZE:
+                    fatal("functor `%s` must map onto `CanonicalOperator`", cur.getOperator());
             }
 
             { UNREACHABLE_BAD_CASE_ANALYSIS }

@@ -81,6 +81,18 @@ bool RecursiveClausesAnalysis::computeIsRecursive(
             continue;
         }
 
+        // check equivalence relations
+        for (auto* attr : cur->getAttributes()) {
+            // Kind of a hack?
+            const Relation* eqrel = program.getRelation(attr->getTypeName());
+            if (eqrel && eqrel->getRepresentation() == RelationRepresentation::EQREL_TYPE) {
+                if (eqrel == trg) {
+                    return true;
+                }
+                worklist.push_back(eqrel);
+            }
+        }
+
         // check all atoms in the relations
         for (auto&& cl : program.getClauses(*cur)) {
             for (const Atom* at : getBodyLiterals<Atom>(*cl)) {

@@ -89,6 +89,8 @@ Own<ram::Expression> ValueTranslator::visit_(
 
     if (ast::analysis::FunctorAnalysis::isMultiResult(inf)) {
         return makeRamTupleElement(index.getGeneratorLoc(inf));
+    } else if (inf.getBaseFunctionOp() == "canonicalize") {
+        return mk<ram::CanonicalOperator>(context.getCanonicalRelation(inf), std::move(values));
     } else {
         return mk<ram::IntrinsicOperator>(context.getOverloadedFunctorOp(inf), std::move(values));
     }

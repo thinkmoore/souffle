@@ -73,4 +73,38 @@ protected:
     const FunctorOp operation;
 };
 
+class CanonicalOperator : public AbstractOperator {
+public:
+    template <typename... Args>
+    CanonicalOperator(std::string rel, Args... args)
+            : AbstractOperator({std::move(args)...}), relation(rel) {}
+
+    CanonicalOperator(std::string rel, VecOwn<Expression> args)
+            : AbstractOperator(std::move(args)), relation(rel) {}
+
+    const std::string& getRelation() const {
+        return relation;
+    }
+
+    CanonicalOperator* cloning() const override {
+        VecOwn<Expression> argsCopy;
+        for (auto& arg : arguments) {
+            argsCopy.emplace_back(arg->cloning());
+        }
+        return new CanonicalOperator(relation, std::move(argsCopy));
+    }
+
+protected:
+    void print(std::ostream& os) const override {
+        os << "canonicalize(" << relation << ", " << join(arguments) << ")";
+    }
+
+    bool equal(const Node& node) const override {
+        const auto& other = asAssert<CanonicalOperator>(node);
+        return AbstractOperator::equal(node) && relation == other.relation;
+    }
+
+    const std::string relation;
+};
+
 }  // namespace souffle::ram

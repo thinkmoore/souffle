@@ -20,6 +20,7 @@
 #include "ast/AliasType.h"
 #include "ast/Attribute.h"
 #include "ast/BranchType.h"
+#include "ast/EqrelType.h"
 #include "ast/Program.h"
 #include "ast/RecordType.h"
 #include "ast/SubsetType.h"
@@ -47,6 +48,8 @@ Graph<QualifiedName> createTypeDependencyGraph(const std::vector<ast::Type*>& pr
             typeDependencyGraph.insert(type->getQualifiedName(), type->getBaseType());
         } else if (auto type = as<ast::AliasType>(astType)) {
             typeDependencyGraph.insert(type->getQualifiedName(), type->getAliasType());
+        } else if (auto type = as<ast::EqrelType>(astType)) {
+            typeDependencyGraph.insert(type->getQualifiedName(), type->getEqrelType());
         } else if (auto type = as<ast::UnionType>(astType)) {
             for (const auto& subtype : type->getTypes()) {
                 typeDependencyGraph.insert(type->getQualifiedName(), subtype);
@@ -185,6 +188,16 @@ const Type* TypeEnvironmentAnalysis::createType(
         }
 
         return &env.createType<AliasType>(typeName, *aliasType);
+
+    } else if (isA<ast::EqrelType>(astType)) {
+        // First create an eqrel type
+        auto* eqrelType = createType(as<ast::EqrelType>(astType)->getEqrelType(), nameToType);
+
+        if (eqrelType == nullptr) {
+            return nullptr;
+        }
+
+        return &env.createType<EqrelType>(typeName, *eqrelType);
 
     } else if (isA<ast::UnionType>(astType)) {
         // Create all elements and then the type itself

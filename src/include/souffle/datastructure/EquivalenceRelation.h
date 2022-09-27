@@ -19,6 +19,7 @@
 #pragma once
 
 #include "souffle/RamTypes.h"
+#include "souffle/datastructure/BTreeDelete.h"
 #include "souffle/datastructure/LambdaBTree.h"
 #include "souffle/datastructure/PiggyList.h"
 #include "souffle/datastructure/UnionFind.h"
@@ -122,6 +123,12 @@ public:
         }
         // invalidate iterators unconditionally
         this->statesMapStale.store(true, std::memory_order_relaxed);
+    }
+
+    value_type canonicalize(value_type& elem) {
+        // indicate that iterators will have to generate on request
+        this->statesMapStale.store(true, std::memory_order_relaxed);
+        return sds.findNode(elem);
     }
 
     /**
