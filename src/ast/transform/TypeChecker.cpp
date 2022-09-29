@@ -67,6 +67,7 @@ private:
     void checkSubsetType(const ast::SubsetType& type);
     void checkAliasType(const ast::AliasType& type);
     void checkEqrelType(const ast::EqrelType& type);
+    void checkPosetType(const ast::PosetType& type);
     void checkUnionType(const ast::UnionType& type);
     void checkADT(const ast::AlgebraicDataType& type);
 };
@@ -264,6 +265,21 @@ void TypeDeclarationChecker::checkEqrelType(const ast::EqrelType& astType) {
     }
 }
 
+void TypeDeclarationChecker::checkPosetType(const ast::PosetType& astType) {
+    if (typeEnvAnalysis.isCyclic(astType.getQualifiedName())) {
+        report.addError(
+                tfm::format("Infinite descent in the definition of type %s", astType.getQualifiedName()),
+                astType.getSrcLoc());
+        return;
+    }
+    if (!typeEnv.isType(astType.getPosetType())) {
+        report.addError(tfm::format("Undefined poset type %s in definition of type %s",
+                                astType.getPosetType(), astType.getQualifiedName()),
+                astType.getSrcLoc());
+        return;
+    }
+}
+
 void TypeDeclarationChecker::checkSubsetType(const ast::SubsetType& astType) {
     if (typeEnvAnalysis.isCyclic(astType.getQualifiedName())) {
         report.addError(
@@ -312,6 +328,8 @@ void TypeDeclarationChecker::run() {
             checkAliasType(*as<ast::AliasType>(type));
         } else if (isA<ast::EqrelType>(type)) {
             checkEqrelType(*as<ast::EqrelType>(type));
+        } else if (isA<ast::PosetType>(type)) {
+            checkPosetType(*as<ast::PosetType>(type));
         } else if (isA<ast::AlgebraicDataType>(type)) {
             checkADT(*as<ast::AlgebraicDataType>(type));
         } else {

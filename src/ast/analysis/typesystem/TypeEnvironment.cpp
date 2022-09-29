@@ -21,6 +21,7 @@
 #include "ast/Attribute.h"
 #include "ast/BranchType.h"
 #include "ast/EqrelType.h"
+#include "ast/PosetType.h"
 #include "ast/Program.h"
 #include "ast/RecordType.h"
 #include "ast/SubsetType.h"
@@ -50,6 +51,8 @@ Graph<QualifiedName> createTypeDependencyGraph(const std::vector<ast::Type*>& pr
             typeDependencyGraph.insert(type->getQualifiedName(), type->getAliasType());
         } else if (auto type = as<ast::EqrelType>(astType)) {
             typeDependencyGraph.insert(type->getQualifiedName(), type->getEqrelType());
+        } else if (auto type = as<ast::PosetType>(astType)) {
+            typeDependencyGraph.insert(type->getQualifiedName(), type->getPosetType());
         } else if (auto type = as<ast::UnionType>(astType)) {
             for (const auto& subtype : type->getTypes()) {
                 typeDependencyGraph.insert(type->getQualifiedName(), subtype);
@@ -198,6 +201,16 @@ const Type* TypeEnvironmentAnalysis::createType(
         }
 
         return &env.createType<EqrelType>(typeName, *eqrelType);
+
+    } else if (isA<ast::PosetType>(astType)) {
+        // First create an poset type
+        auto* posetType = createType(as<ast::PosetType>(astType)->getPosetType(), nameToType);
+
+        if (posetType == nullptr) {
+            return nullptr;
+        }
+
+        return &env.createType<PosetType>(typeName, *posetType);
 
     } else if (isA<ast::UnionType>(astType)) {
         // Create all elements and then the type itself

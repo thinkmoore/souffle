@@ -85,7 +85,7 @@ bool RecursiveClausesAnalysis::computeIsRecursive(
         for (auto* attr : cur->getAttributes()) {
             // Kind of a hack?
             const Relation* eqrel = program.getRelation(attr->getTypeName());
-            if (eqrel && eqrel->getRepresentation() == RelationRepresentation::EQREL_TYPE) {
+            if (eqrel && eqrel->hasQualifier(RelationQualifier::TYPE)) {
                 if (eqrel == trg) {
                     return true;
                 }

@@ -35,6 +35,7 @@ set(SOUFFLE_SOURCES
     ast/NilConstant.cpp
     ast/Node.cpp
     ast/NumericConstant.cpp
+    ast/PosetType.cpp
     ast/Pragma.cpp
     ast/Program.cpp
     ast/QualifiedName.cpp

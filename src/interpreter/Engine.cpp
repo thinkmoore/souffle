@@ -337,8 +337,6 @@ void Engine::createRelation(const ram::Relation& id, const std::size_t idx) {
 
     if (id.getRepresentation() == RelationRepresentation::EQREL) {
         res = createEqrelRelation(id, isa.getIndexSelection(id.getName()));
-    } else if (id.getRepresentation() == RelationRepresentation::EQREL_TYPE) {
-        res = createEqrelRelation(id, isa.getIndexSelection(id.getName()));
     } else if (id.getRepresentation() == RelationRepresentation::BTREE_DELETE) {
         res = createBTreeDeleteRelation(id, isa.getIndexSelection(id.getName()));
     } else if (id.getRepresentation() == RelationRepresentation::PROVENANCE) {

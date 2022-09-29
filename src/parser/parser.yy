@@ -62,6 +62,7 @@
     #include "ast/Literal.h"
     #include "ast/NilConstant.h"
     #include "ast/NumericConstant.h"
+    #include "ast/PosetType.h"
     #include "ast/Pragma.h"
     #include "ast/QualifiedName.h"
     #include "ast/RecordInit.h"
@@ -135,6 +136,7 @@
 %token BTREE_QUALIFIER           "BTREE datastructure qualifier"
 %token BTREE_DELETE_QUALIFIER    "BTREE_DELETE datastructure qualifier"
 %token EQREL_QUALIFIER           "equivalence relation qualifier"
+%token POSET_QUALIFIER           "partial order type qualifier"
 %token OVERRIDABLE_QUALIFIER     "relation qualifier overidable"
 %token INLINE_QUALIFIER          "relation qualifier inline"
 %token NO_INLINE_QUALIFIER       "relation qualifier no_inline"
@@ -381,6 +383,11 @@ type_decl
     {
       assert($union_type_list.size() == 1 && "eqrel type must specify exactly one type");
       $$ = mk<ast::EqrelType>($IDENT, $union_type_list[0], @$);
+    }
+  | TYPE IDENT EQUALS POSET_QUALIFIER union_type_list
+    {
+      assert($union_type_list.size() == 1 && "eqrel type must specify exactly one type");
+      $$ = mk<ast::PosetType>($IDENT, $union_type_list[0], @$);
     }
   | TYPE IDENT EQUALS union_type_list
     {

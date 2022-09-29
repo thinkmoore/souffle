@@ -33,6 +33,10 @@ void EqrelType::print(std::ostream& out) const {
     out << tfm::format("%s = eqrel %s", getName(), eqrelType.getName());
 }
 
+void PosetType::print(std::ostream& out) const {
+    out << tfm::format("%s = poset %s", getName(), posetType.getName());
+}
+
 void SubsetType::print(std::ostream& out) const {
     out << tfm::format("%s <: %s", getName(), baseType.getName());
 }
@@ -107,6 +111,7 @@ struct TypeVisitor {
         FORWARD(Subset);
         FORWARD(Alias);
         FORWARD(Eqrel);
+        FORWARD(Poset);
         FORWARD(Union);
         FORWARD(Record);
         FORWARD(AlgebraicData);
@@ -124,6 +129,7 @@ struct TypeVisitor {
     VISIT(Subset)
     VISIT(Alias)
     VISIT(Eqrel);
+    VISIT(Poset);
     VISIT(Union)
     VISIT(Record)
     VISIT(AlgebraicData)
@@ -177,6 +183,10 @@ bool isOfRootType(const Type& type, const Type& root) {
 
         bool visitEqrelType(const EqrelType& type) const override {
             return type == root || this->visit(type.getEqrelType());
+        }
+
+        bool visitPosetType(const PosetType& type) const override {
+            return type == root || this->visit(type.getPosetType());
         }
 
         bool visitAlgebraicDataType(const AlgebraicDataType& type) const override {

@@ -234,8 +234,6 @@ Own<ram::Statement> UnitTranslator::generateMergeRelationsWithFilter(const ast::
 
     if (rel->getRepresentation() == RelationRepresentation::EQREL) {
         return mk<ram::Sequence>(mk<ram::MergeExtend>(destRelation, srcRelation), std::move(stmt));
-    } else if (rel->getRepresentation() == RelationRepresentation::EQREL_TYPE) {
-        return mk<ram::Sequence>(mk<ram::MergeExtend>(destRelation, srcRelation), std::move(stmt));
     }
     return stmt;
 }
@@ -253,8 +251,6 @@ Own<ram::Statement> UnitTranslator::generateMergeRelations(
 
     // Predicate - insert all values
     if (rel->getRepresentation() == RelationRepresentation::EQREL) {
-        return mk<ram::MergeExtend>(destRelation, srcRelation);
-    } else if (rel->getRepresentation() == RelationRepresentation::EQREL_TYPE) {
         return mk<ram::MergeExtend>(destRelation, srcRelation);
     }
     for (std::size_t i = 0; i < rel->getArity(); i++) {

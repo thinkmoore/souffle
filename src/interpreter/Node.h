@@ -150,8 +150,6 @@ inline NodeType constructNodeType(std::string tokBase, const ram::Relation& rel)
     std::string arity = std::to_string(rel.getArity());
     if (rel.getRepresentation() == RelationRepresentation::EQREL) {
         return map.at("I_" + tokBase + "_Eqrel_" + arity);
-    } else if (rel.getRepresentation() == RelationRepresentation::EQREL_TYPE) {
-        return map.at("I_" + tokBase + "_Eqrel_" + arity);
     } else if(rel.getRepresentation() == RelationRepresentation::BTREE_DELETE) {
         return map.at("I_" + tokBase + "_BtreeDelete_" + arity);
     } else if (isProvenance) {

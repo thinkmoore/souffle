@@ -23,6 +23,7 @@
 #include "ast/BinaryConstraint.h"
 #include "ast/BranchInit.h"
 #include "ast/Clause.h"
+#include "ast/EqrelType.h"
 #include "ast/IntrinsicFunctor.h"
 #include "ast/Negation.h"
 #include "ast/NumericConstant.h"
@@ -315,7 +316,12 @@ std::string TypeAnalysis::getCanonicalRelation(const IntrinsicFunctor& functor) 
     auto tySet = argumentTypes.find(argExpr)->second;
     assert(tySet.size() == 1);
     auto ty = tySet.begin();
-    return ty->getName().toString();
+    if (isA<PosetType>(&*ty)) {
+        return ty->getName().toString() + "_eqrel";
+    } else if (isA<EqrelType>(&*ty)) {
+        return ty->getName().toString();
+    }
+    assert(false && "Canonicalize invoked on invalid type");
 }
 
 bool TypeAnalysis::analyseIntrinsicFunctors(const TranslationUnit& translationUnit) {

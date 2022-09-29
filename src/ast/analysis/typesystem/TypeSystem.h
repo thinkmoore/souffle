@@ -47,7 +47,7 @@ class TypeEnvironment;
  * record type, an algebraic data-type.
  *
  * Type = PrimitiveType | ConstantType | SubsetType | AliasType |
- *        EqrelType | UnionType | RecordType | AlgebraicDataType
+ *        PosetType | EqrelType | UnionType | RecordType | AlgebraicDataType
  */
 class Type {
 public:
@@ -188,6 +188,28 @@ private:
 
     /** Base type */
     const Type& eqrelType;
+};
+
+/*
+ * Poset Type Class
+ */
+class PosetType : public Type {
+public:
+    void print(std::ostream& out) const override;
+
+    const Type& getPosetType() const {
+        return posetType;
+    }
+
+protected:
+    PosetType(const TypeEnvironment& environment, const QualifiedName& name, const Type& poset)
+            : Type(environment, name), posetType(poset){};
+
+private:
+    friend class TypeEnvironment;
+
+    /** Base type */
+    const Type& posetType;
 };
 
 /**

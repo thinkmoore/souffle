@@ -44,6 +44,8 @@ void PrecedenceGraphAnalysis::run(const TranslationUnit& translationUnit) {
             if (const auto* t = program.getType(a->getTypeName())) {
                 if (isA<ast::EqrelType>(t)) {
                     backingGraph.insert(program.getRelation(a->getTypeName()), r);
+                } else if (isA<ast::PosetType>(t)) {
+                    backingGraph.insert(program.getRelation(a->getTypeName()), r);
                 }
             }
         }

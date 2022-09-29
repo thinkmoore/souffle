@@ -43,6 +43,7 @@
 #include "ast/NilConstant.h"
 #include "ast/Node.h"
 #include "ast/NumericConstant.h"
+#include "ast/PosetType.h"
 #include "ast/Pragma.h"
 #include "ast/Program.h"
 #include "ast/RecordInit.h"
@@ -78,6 +79,7 @@ struct Visitor : souffle::detail::VisitorBase<R, NodeType, Params...> {
         // types
         SOUFFLE_VISITOR_FORWARD(AliasType);
         SOUFFLE_VISITOR_FORWARD(EqrelType);
+        SOUFFLE_VISITOR_FORWARD(PosetType);
         SOUFFLE_VISITOR_FORWARD(SubsetType);
         SOUFFLE_VISITOR_FORWARD(UnionType);
         SOUFFLE_VISITOR_FORWARD(RecordType);
@@ -128,6 +130,7 @@ struct Visitor : souffle::detail::VisitorBase<R, NodeType, Params...> {
     SOUFFLE_VISITOR_LINK(ast::RecordType, Type);
     SOUFFLE_VISITOR_LINK(ast::AliasType, Type);
     SOUFFLE_VISITOR_LINK(ast::EqrelType, Type);
+    SOUFFLE_VISITOR_LINK(ast::PosetType, Type);
     SOUFFLE_VISITOR_LINK(ast::AlgebraicDataType, Type);
     SOUFFLE_VISITOR_LINK(ast::UnionType, Type);
     SOUFFLE_VISITOR_LINK(ast::Type, Node);

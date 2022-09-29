@@ -61,8 +61,6 @@ Own<Relation> Relation::getSynthesiserRelation(
         rel = new BrieRelation(ramRel, indexSelection);
     } else if (ramRel.getRepresentation() == RelationRepresentation::EQREL) {
         rel = new EqrelRelation(ramRel, indexSelection);
-    } else if (ramRel.getRepresentation() == RelationRepresentation::EQREL_TYPE) {
-        rel = new EqrelRelation(ramRel, indexSelection);
     } else if (ramRel.getRepresentation() == RelationRepresentation::INFO) {
         rel = new InfoRelation(ramRel, indexSelection);
     } else {
